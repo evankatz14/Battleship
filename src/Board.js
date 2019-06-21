@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Squares from "./Squares"
+import Boom from './boom.jpg'
 
 export default class Board extends Component {
     //initiate state with array to hold 100 null spots on board.
@@ -10,9 +11,12 @@ export default class Board extends Component {
             background: Array(100).fill('aqua'),
             clicks: 25,
             hits: 0,
-            shipLoc: Array.from({length:5}, () =>
-            Math.floor(Math.random() * 100))
+            shipLoc: []
         }
+    }
+
+    componentDidMount = () => {
+        this.newGame()
     }
 
     renderSquare = (i) => {
@@ -31,7 +35,6 @@ export default class Board extends Component {
     }
 
     handleClick = (i) => {
-        console.log(this.state.shipLoc)
         const newBoard    = this.state.board.slice()
         let newBackground = this.state.background
         let numClicks     = this.state.clicks
@@ -66,7 +69,7 @@ export default class Board extends Component {
         this.setState({board: newBoard, background: newBackground, clicks: numClicks, hits})
     }
 
-    placeShips = () => {
+    newGame = () => {
         let shipLoc = []
         let board = Array(100).fill(null)
         let background = Array(100).fill('aqua')
@@ -74,7 +77,7 @@ export default class Board extends Component {
         let newNum = 0
         let hits = 0
 
-        for(let i = 0; i < 5; i++){
+        for(let i = 0; i <= 5; i++){
             newNum = Math.floor(Math.random() * 100)
             if(!shipLoc.includes(newNum)){
                 shipLoc.push(newNum)
@@ -85,6 +88,7 @@ export default class Board extends Component {
 
     render(){
         const {board, background, clicks, hits} = this.state
+        console.log(this.state.shipLoc)
         return (
             <div>
                 <div className = "Board">
@@ -94,9 +98,9 @@ export default class Board extends Component {
                            </div>
                     })}
                 </div>
-                <div className = "status">Torpedoes Remaining: {clicks}</div>
-                <div className = "status">Number of Hits: {hits}/5</div>
-                <button className = "NewGame" onClick = {this.placeShips}>New Game!</button>
+                <h2 className = "status">Torpedoes Remaining: {clicks}</h2>
+                <h2 className = "status">Number of Hits: {hits}/5</h2>
+                <button className = "NewGame" onClick = {this.newGame}>New Game!</button>
             </div>
         );
     }

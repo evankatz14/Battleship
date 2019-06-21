@@ -7,8 +7,11 @@ class App extends Component {
     render(){
 
         return (
-            <div className="App">
-                <Board />
+            <div>
+                <h2 className = "Header">Battleship! Find the Ships</h2>
+                <div className="App">
+                    <Board />
+                </div>
             </div>
         );
     }
