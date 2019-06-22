@@ -23,7 +23,8 @@ export default class Board extends Component {
         return <Squares
                     value = {this.state.board[i]}
                     background = {this.state.background[i]}
-                    handleClick = {() => this.handleClick(i)}
+                    index = {i}
+                    handleClick = {this.handleClick}
                 />
     }
     winner = (board) => {
@@ -35,6 +36,7 @@ export default class Board extends Component {
     }
 
     handleClick = (i) => {
+        console.log(i)
         const newBoard    = this.state.board.slice()
         let newBackground = this.state.background
         let numClicks     = this.state.clicks
@@ -77,7 +79,7 @@ export default class Board extends Component {
         let newNum = 0
         let hits = 0
 
-        for(let i = 0; i <= 5; i++){
+        for(let i = 0; i < 5; i++){
             newNum = Math.floor(Math.random() * 100)
             if(!shipLoc.includes(newNum)){
                 shipLoc.push(newNum)
