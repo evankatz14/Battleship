@@ -1,5 +1,7 @@
 html {
     background:url('./wave.png') no-repeat;
+    min-width: 1200px;
+    position: relative;
 }
 
 .App {
@@ -9,6 +11,12 @@ html {
     align-items: center;
     text-align: center;
     font-family: 'Aguafina Script', cursive;
+}
+
+.Header {
+    text-align: center;
+    font-family: 'Aguafina Script', cursive;
+    font-size: 50px;
 }
 
 .Board {
@@ -41,8 +49,24 @@ a:hover {
     font-size: 30px;
 }
 
-.Header {
-    text-align: center;
-    font-family: 'Aguafina Script', cursive;
-    font-size: 50px;
+.NewGame {
+    margin-bottom: 20px;
 }
+
+.ScoreBoard {
+    display: flex;
+    flex-wrap: wrap;
+    position: fixed;
+    top: 30px;
+    right: 50px;
+    border-style: solid;
+    border-width: 3px;
+    width: 200px;
+    height: 100px;
+}
+
+.Tracker {
+    display: inline;
+    margin: 0;
+}
+

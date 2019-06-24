@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Squares from "./Squares"
 import Boom from './boom.jpg'
+import ScoreBoard from './ScoreBoard'
 
 export default class Board extends Component {
     //initiate state with array to hold 100 null spots on board.
@@ -11,7 +12,9 @@ export default class Board extends Component {
             background: Array(100).fill('aqua'),
             clicks: 25,
             hits: 0,
-            shipLoc: []
+            shipLoc: [],
+            wins: 0,
+            attempts: 0
         }
     }
 
@@ -37,38 +40,45 @@ export default class Board extends Component {
 
     handleClick = (i) => {
         console.log(i)
-        const newBoard    = this.state.board.slice()
-        let newBackground = this.state.background
-        let numClicks     = this.state.clicks
-        const shipLoc     = this.state.shipLoc
-        let hits = this.state.hits
-        if(numClicks > 0 && !this.winner(newBoard)){
-            if(newBoard[i] === null && shipLoc.includes(i)) {
-                numClicks--
+        const board      = this.state.board.slice()
+        const background = this.state.background
+        let clicks     = this.state.clicks
+        const shipLoc    = this.state.shipLoc
+        let hits       = this.state.hits
+        let wins       = this.state.wins
+        let attempts   = this.state.attempts
+        
+        if(clicks > 0 && !this.winner(board)){
+            if(board[i] === null && shipLoc.includes(i)) {
+                clicks--
                 hits++
-                newBoard[i] = 'X'
-                newBackground[i] = 'red'
-                if(this.winner(newBoard)){
+                board[i] = 'X'
+                background[i] = 'red'
+                if(this.winner(board)){
+                    wins++
+                    attempts++
                     setTimeout(function() {alert("You win!")}, 250)
-                } else if(numClicks === 0){
+                } else if(clicks === 0){
                     setTimeout(function() {alert("Out of torpedoes.. you lose!!  Click reset to try again..")}, 250)
+                    attempts++
                 }
-            }else if(newBoard[i] === null){
-                numClicks --
-                newBoard[i] = 'O'
-                newBackground[i] = 'blue'
-                if(numClicks === 0) {
+            }else if(board[i] === null){
+                clicks --
+                board[i] = 'O'
+                background[i] = 'blue'
+                if(clicks === 0) {
                     for(let j = 0; j < shipLoc.length; j++){
-                        if(newBoard[shipLoc[j]] === null){
-                            newBoard[shipLoc[j]] = 'S'
-                            newBackground[shipLoc[j]] = 'orange'
+                        if(board[shipLoc[j]] === null){
+                            board[shipLoc[j]] = 'S'
+                            background[shipLoc[j]] = 'orange'
                         }
                     }
+                    attempts++
                     setTimeout(function() {alert("Out of torpedoes.. you lose!!  Click reset to try again..")}, 250)
                 }
             }
         }
-        this.setState({board: newBoard, background: newBackground, clicks: numClicks, hits})
+        this.setState({board, background, clicks, hits, wins, attempts})
     }
 
     newGame = () => {
@@ -89,7 +99,7 @@ export default class Board extends Component {
     }
 
     render(){
-        const {board, background, clicks, hits} = this.state
+        const {board, clicks, hits, wins, attempts} = this.state
         console.log(this.state.shipLoc)
         return (
             <div>
@@ -100,6 +110,10 @@ export default class Board extends Component {
                            </div>
                     })}
                 </div>
+                <ScoreBoard 
+                    wins = {wins}
+                    attempts = {attempts}
+                />
                 <h2 className = "status">Torpedoes Remaining: {clicks}</h2>
                 <h2 className = "status">Number of Hits: {hits}/5</h2>
                 <button className = "NewGame" onClick = {this.newGame}>New Game!</button>
